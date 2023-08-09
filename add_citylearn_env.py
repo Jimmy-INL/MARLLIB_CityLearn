@@ -40,14 +40,17 @@ import time
 from citylearn.citylearn import CityLearnEnv
 from citylearn.wrappers import StableBaselines3Wrapper
 from citylearn.wrappers import NormalizedObservationWrapper
+from pathlib import Path
+
 # FIX THIS
 REGISTRY = {}
 REGISTRY["CityLearn"] = CityLearnEnv
 
+
 policy_mapping_dict = {
     "CityLearn": {
         "description": "two buildings cooperate",
-        "building_prefix": "building_", #this might cause errors - check
+        "team_prefix": ("building_1_", "building_2_"),
         "all_agents_one_policy": True,
         "one_agent_one_policy": True,
     }

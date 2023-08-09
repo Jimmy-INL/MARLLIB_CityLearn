@@ -23,7 +23,8 @@
 env: CityLearnGym
 
 env_args:
-  schema: "citylearn_challenge_2022_phase_1"
+  schema: "./data/schema.json"
+  # schema: "citylearn_challenge_2022_phase_1"
 
 mask_flag: False
 global_state_flag: False

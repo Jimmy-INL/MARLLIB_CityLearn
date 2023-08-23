@@ -126,5 +126,5 @@ def run_mappo(model: Any, exp: Dict, run: Dict, env: Dict,
                        verbose=1,
                        progress_reporter=CLIReporter(),
                        local_dir=available_local_dir if exp["local_dir"] == "" else exp["local_dir"])
-
+                        # , fail_fast="true"
     return results

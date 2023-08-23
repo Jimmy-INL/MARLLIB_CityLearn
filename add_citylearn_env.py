@@ -84,7 +84,11 @@ class RLlibCityLearnGym(MultiAgentEnv):
 
     def step(self, action_dict):
         action_ls = [action_dict[key] for key in action_dict.keys()]
-        print(action_ls)
+        # THIS IS THE WRONG WAY TO HANDLE THE STEP => SEE THE CITYLEARN STEP!!
+        # o = observations
+        # r = rewards
+        # d = done
+        # info = get_info of citylearn
         o, r, d, info = self.env.step(action_ls)
         rewards = {}
         obs = {}
@@ -93,7 +97,7 @@ class RLlibCityLearnGym(MultiAgentEnv):
             obs[key] = {
                 "obs": np.array(o[i])
             }
-        dones = {"__all__": True if sum(d) == self.num_agets else False}
+        dones = {"__all__": d}
         return obs, rewards, dones, {}
     
     def close(self):

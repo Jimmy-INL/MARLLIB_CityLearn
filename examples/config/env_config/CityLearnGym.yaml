@@ -23,7 +23,7 @@
 env: CityLearnGym
 
 env_args:
-  schema: "./data/schema.json"
+  schema: "/home/allenwu/Desktop/work/MARLlib-1.0.3/data/schema.json"
   # schema: "citylearn_challenge_2022_phase_1"
 
 mask_flag: False

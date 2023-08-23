@@ -32,7 +32,7 @@ from marllib.marl.common import recursive_dict_update, dict_update
 tf1, tf, tfv = try_import_tf()
 torch, nn = try_import_torch()
 
-
+# value decomposition
 def run_vd(exp_info, env, model, stop=None):
     ray.init(local_mode=exp_info["local_mode"])
 

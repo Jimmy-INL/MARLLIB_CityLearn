@@ -122,6 +122,7 @@ if __name__ == '__main__':
     # print(env[0].observation_space)
     # env = StableBaselines3Wrapper(env)
     # env[0] = NormalizedObservationWrapper(env[0])
+    # write MASAC
     mappo = marl.algos.mappo(hyperparam_source="test")
     model = marl.build_model(env, mappo, {"core_arch": "mlp", "encode_layer": "128-128"})
     mappo.fit(env, model, stop={'episode_reward_mean': 2000, 'timesteps_total': 10000000}, local_mode=True, num_gpus=1,

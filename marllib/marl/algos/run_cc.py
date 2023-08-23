@@ -28,7 +28,7 @@ from marllib.marl.common import recursive_dict_update, dict_update
 
 torch, nn = try_import_torch()
 
-
+# conditional cooperation?
 def run_cc(exp_info, env, model, stop=None):
     ray.init(local_mode=exp_info["local_mode"])
 

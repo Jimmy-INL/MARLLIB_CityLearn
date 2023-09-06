@@ -125,5 +125,8 @@ if __name__ == '__main__':
     # write MASAC
     mappo = marl.algos.mappo(hyperparam_source="test")
     model = marl.build_model(env, mappo, {"core_arch": "mlp", "encode_layer": "128-128"})
-    mappo.fit(env, model, stop={'episode_reward_mean': 2000, 'timesteps_total': 10000000}, local_mode=True, num_gpus=1,
+    mappo.fit(env, model, stop={'episode_reward_mean': 0, 'timesteps_total': 10000000}, local_mode=True, num_gpus=1,
               num_workers=2, share_policy='all', checkpoint_freq=50)
+    
+    # https://docs.ray.io/en/latest/rllib/rllib-algorithms.html#sac
+    # add a new algorithm with this!

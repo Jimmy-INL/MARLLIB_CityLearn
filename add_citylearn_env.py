@@ -63,13 +63,15 @@ class RLlibCityLearnGym(MultiAgentEnv):
         env_config.pop("map_name", None)
 
         self.env = REGISTRY[map](**env_config)
-        # assume all agent same action/obs space
         self.action_space = self.env.action_space[0]
+        # self.observation_space = self.env.observation_space[0]
         self.observation_space = GymDict({"obs": Box(
-            low=-10000.0,
-            high=10000.0,
+            low=self.env.observation_space[0].low,
+            high=self.env.observation_space[0].high,
             shape=(self.env.observation_space[0].shape[0],),
             dtype=np.dtype("float64"))})
+        # self.observation_space = GymDict({"obs": self.env.observation_space[0]})
+        
         self.agents = ["building_1", "building_2"]
         self.num_agents = len(self.agents)
         env_config["map_name"] = map
@@ -77,7 +79,10 @@ class RLlibCityLearnGym(MultiAgentEnv):
 
     def reset(self):
         original_obs = self.env.reset()
+        # return GymDict({"obs": Box(self.env.observation_space[0])})
         obs = {}
+        # index out of bounds error if central_agent
+
         for i, name in enumerate(self.agents):
             obs[name] = {"obs": np.array(original_obs[i])}
         return obs
@@ -110,23 +115,21 @@ class RLlibCityLearnGym(MultiAgentEnv):
             "space_obs": self.observation_space,
             "space_act": self.action_space,
             "num_agents": self.num_agents,
-            "episode_limit": 100,
+            "episode_limit": 1,
             "policy_mapping_info": policy_mapping_dict
         }
         return env_info
 
 if __name__ == '__main__':
     ENV_REGISTRY["CityLearnGym"] = RLlibCityLearnGym
-
     env = marl.make_env(environment_name="CityLearnGym", map_name="CityLearn")
-    # print(env[0].observation_space)
-    # env = StableBaselines3Wrapper(env)
-    # env[0] = NormalizedObservationWrapper(env[0])
+
+
     # write MASAC
     mappo = marl.algos.mappo(hyperparam_source="test")
     model = marl.build_model(env, mappo, {"core_arch": "mlp", "encode_layer": "128-128"})
-    mappo.fit(env, model, stop={'episode_reward_mean': 0, 'timesteps_total': 10000000}, local_mode=True, num_gpus=1,
-              num_workers=2, share_policy='all', checkpoint_freq=50)
+    mappo.fit(env, model, stop={'timesteps_total': 8759}, local_mode=True, num_gpus=1,
+              num_workers=2, share_policy='all', checkpoint_freq=500)
     
     # https://docs.ray.io/en/latest/rllib/rllib-algorithms.html#sac
     # add a new algorithm with this!

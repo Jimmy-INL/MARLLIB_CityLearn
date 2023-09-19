@@ -85,6 +85,9 @@ class RLlibCityLearnGym(MultiAgentEnv):
 
         for i, name in enumerate(self.agents):
             obs[name] = {"obs": np.array(original_obs[i])}
+
+        
+        
         return obs
 
     def step(self, action_dict):
@@ -108,6 +111,9 @@ class RLlibCityLearnGym(MultiAgentEnv):
     def close(self):
         self.env.close()
 
+    def expose_env(self):
+        return self.env
+
     # no render method, you cannot render this env
 
     def get_env_info(self):
@@ -126,10 +132,11 @@ if __name__ == '__main__':
 
 
     # write MASAC
-    mappo = marl.algos.mappo(hyperparam_source="test")
+    mappo = marl.algos.mappo(hyperparam_source="common")
     model = marl.build_model(env, mappo, {"core_arch": "mlp", "encode_layer": "128-128"})
     mappo.fit(env, model, stop={'timesteps_total': 8759}, local_mode=True, num_gpus=1,
-              num_workers=2, share_policy='all', checkpoint_freq=500)
+              num_workers=2, share_policy='all', checkpoint_freq=500,
+              checkpoint_end=True)
     
     # https://docs.ray.io/en/latest/rllib/rllib-algorithms.html#sac
     # add a new algorithm with this!
